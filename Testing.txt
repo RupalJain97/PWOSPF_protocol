@@ -1,0 +1,36 @@
+./sr -t 114 -v vhost1 -r rtable.net
+./sr -t 114 -v vhost2 -r rtable.empty
+./sr -t 114 -v vhost3 -r rtable.empty
+
+4.	Successful retrieval of a web page:
+wget http://172.29.4.235:16280
+wget http://172.29.4.231:16280
+
+5.	Successful retrieval of a large web object:
+wget http://172.29.4.231:16280/64MB.bin
+wget http://172.29.4.235:16280/64MB.bin
+
+
+To fail the link:
+vnltopo114.sh vhost1 setlossy eth1 100
+vnltopo114.sh vhost2 setlossy eth0 100
+
+vnltopo114.sh vhost1 setlossy eth2 100
+vnltopo114.sh vhost3 setlossy eth0 100
+
+vnltopo114.sh vhost2 setlossy eth2 100
+vnltopo114.sh vhost3 setlossy eth2 100
+
+To bring the link back up:
+vnltopo114.sh vhost1 setlossy eth1 0
+vnltopo114.sh vhost2 setlossy eth0 0
+
+vnltopo114.sh vhost1 setlossy eth2 0
+vnltopo114.sh vhost3 setlossy eth0 0
+
+To check the current loss rate:
+vnltopo114.sh vhost1 status
+
+Another test that you can do using this script is pinging from server 1 to server 2 and vice versa.
+vnltopo114.sh server1 ping 172.29.4.235
+vnltopo114.sh server2 ping 172.29.4.231
